@@ -23,5 +23,5 @@ client.on("messageCreate", (message)=> {
 });
 
 //Login using the token
-client.login("MTIwMDM2NDAyNzczNDM5NzAxOA.GUos4s.Xew0DsWaui4mzJmufQA0b1JeXaRslcKqTyICWY")
+client.login(process.env.BOT_TOKEN );
 
