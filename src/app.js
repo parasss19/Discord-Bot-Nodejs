@@ -1,10 +1,13 @@
+const {config} = require('dotenv');       
 const {Client, GatewayIntentBits}  = require ('discord.js');
+
+config();         
 
 const client = new Client( { 
     intents : [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent,
+      'Guilds',
+      'GuildMessages',
+      'MessageContent',
     ]
 });
 
@@ -25,3 +28,9 @@ client.on("messageCreate", (message)=> {
 //Login using the token
 client.login(process.env.BOT_TOKEN);
 
+
+
+//Note
+// 1 The 'dotenv' package is commonly used in Node.js applications to load environment variables from a file named .env into the process environment.
+// 2 This function reads the variables defined in the .env file and adds them to the process.env object, making them accessible throughout the application.
+// It's important to call this function early in the application's startup process to ensure that environment variables are loaded before they are used elsewhere in the code.
