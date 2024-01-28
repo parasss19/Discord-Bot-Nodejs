@@ -1,13 +1,22 @@
 const {config} = require('dotenv').config();       
-const {Client, GatewayIntentBits, ClientUser}  = require ('discord.js');
+const {Client, GatewayIntentBits, WebhookClient}  = require ('discord.js');
 
 const client = new Client( { 
-    intents : [
-      'Guilds',
-      'GuildMessages',
-      'MessageContent',
-    ]
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+  ],
+
+  partials: ['MESSAGE', 'REACTION']
 });
+
+
+//Webhook
+const webHook = new WebhookClient(
+   process.env.WEBHOOK_ID,
+   process.env.WEBHOOK_TOKEN,
+)
 
 
 //Ready event (whenever we start the bot)
@@ -28,9 +37,9 @@ client.on('messageCreate', (message) => {
     //Output = [parasss19] : hii
     console.log(`[${message.author.tag}] : ${message.content}`)  
     
-    // if(message.content === 'hello'){
-    //   message.channel.send("helloo");
-    // }
+    if(message.content === 'hello'){
+      message.channel.send("helloo");
+    }
   
    
     //**** OUR OWN COMMANDS *** : If command starts with "$" then we perform this
@@ -90,15 +99,59 @@ client.on('messageCreate', (message) => {
               .catch((err) => message.channel.send('I cannot Ban that user '));
           }
 
+          
 
     }
 })
 
 
+//Providing Roles using Reactions = messageReactionAdd event(Emitted whenever a reaction is added to a cached message.)
+//We can also use async/await
+client.on('messageReactionAdd', (reaction, user) => {
+  console.log('hello');
+  const { name } = reaction.emoji;
+  const member =  reaction.message.guild.members.cache.get(user.id);
+
+  if (reaction.message.id === '1201105345360171089') {
+      switch (name) {
+        case '🍎': 
+          member.roles.add('1201108305922244678');
+          break;
+        case '🍑': 
+          member.roles.add('1201108514551103488');
+          break;
+        case '🍇': 
+          member.roles.add('1201108412226863174');
+          break;
+      }
+  }
+});
+
+
+//Removing Roles
+client.on('messageReactionRemove', (messageReaction, user) => {
+  const { name } = messageReaction.emoji;
+  const member =  messageReaction.message.guild.members.get(user.id);
+
+  if (messageReaction.message.id === '1201105345360171089') {
+      switch (name) {
+          case '🍎': 
+              member.roles.remove('1201108305922244678');
+              break;
+          case '🍑': 
+              member.roles.remove('1201108514551103488');
+              break;
+          case '🍇': 
+              member.roles.remove('1201108412226863174');
+              break;
+      }
+  }
+});
 
 
 //Login using the token
 client.login(process.env.BOT_TOKEN);
+
 
 //Note
 // 1 The 'dotenv' package is commonly used in Node.js applications to load environment variables from a file named .env into the process environment.
