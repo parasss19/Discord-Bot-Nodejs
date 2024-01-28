@@ -13,10 +13,10 @@ const client = new Client( {
 
 
 //Webhook
-const webHook = new WebhookClient(
-   process.env.WEBHOOK_ID,
-   process.env.WEBHOOK_TOKEN,
-)
+const webhookClient = new WebhookClient({
+  id: process.env.WEBHOOK_ID,
+  token: process.env.WEBHOOK_TOKEN,
+});
 
 
 //Ready event (whenever we start the bot)
@@ -99,7 +99,14 @@ client.on('messageCreate', (message) => {
               .catch((err) => message.channel.send('I cannot Ban that user '));
           }
 
-          
+          //WebHook
+          else if (command_name === 'announce') {
+            //command = $announce hello everyone
+            console.log(args);                 //[ 'hello', 'everyone' ]
+            const msg = args.join(' ');        
+            console.log(msg);                  //hello everyone
+            webhookClient.send(msg);
+          }
 
     }
 })
