@@ -38,7 +38,7 @@ client.on('messageCreate', (message) => {
     console.log(`[${message.author.tag}] : ${message.content}`)  
     
     if(message.content === 'hello'){
-      message.channel.send("helloo");
+      message.channel.send("hello");
     }
   
    
@@ -99,7 +99,7 @@ client.on('messageCreate', (message) => {
               .catch((err) => message.channel.send('I cannot Ban that user '));
           }
 
-          //WebHook
+          // For Announce command (using WebHook)
           else if (command_name === 'announce') {
             //command = $announce hello everyone
             console.log(args);                 //[ 'hello', 'everyone' ]
@@ -107,13 +107,11 @@ client.on('messageCreate', (message) => {
             console.log(msg);                  //hello everyone
             webhookClient.send(msg);
           }
-
     }
 })
 
 
-//Providing Roles using Reactions = messageReactionAdd event(Emitted whenever a reaction is added to a cached message.)
-//We can also use async/await
+//Adding Roles using Reactions = messageReactionAdd event(Emitted whenever a reaction is added to a cached message.)
 client.on('messageReactionAdd', (reaction, user) => {
   console.log('hello');
   const { name } = reaction.emoji;
